@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- start node -->
+	<node pkg="listener_cpp" type="listener_cpp_node" name="listener" output="screen">
+	</node>
+
+</launch>

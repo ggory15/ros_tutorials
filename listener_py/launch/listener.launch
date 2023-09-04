@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- start node -->
+	<node pkg="listener_py" type="listener.py" name="listener" output="screen">
+	</node>
+
+</launch>
