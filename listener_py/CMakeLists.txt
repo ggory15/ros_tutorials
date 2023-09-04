@@ -20,7 +20,7 @@ catkin_install_python(PROGRAMS
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${PROJECT_NAME}
 )
 install(FILES
-  launch/talker_listener.launch
+  launch/listener.launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${PROJECT_NAME}
 )
 
