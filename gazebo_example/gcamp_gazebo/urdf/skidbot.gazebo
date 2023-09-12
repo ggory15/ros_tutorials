@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!--skid_steer_drive_controller-->
+  <gazebo>
+    <plugin name='skid_steer_drive' filename='libgazebo_ros_skid_steer_drive.so'>
+      <updateRate>500</updateRate>
+
+      <leftFrontJoint>front_left_wheel_joint</leftFrontJoint>
+      <rightFrontJoint>front_right_wheel_joint</rightFrontJoint>
+      <leftRearJoint>back_left_wheel_joint</leftRearJoint>
+      <rightRearJoint>back_right_wheel_joint</rightRearJoint>
+
+      <wheelSeparation>0.4</wheelSeparation>
+      <wheelDiameter>0.2</wheelDiameter>
+
+      <torque>20</torque>
+
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <broadcastTF>true</broadcastTF>
+    </plugin>
+  </gazebo>
+
+</robot>
