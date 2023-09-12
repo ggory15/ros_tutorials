@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- start node -->
+	<node pkg="add_two_ints_server_cpp" type="add_two_ints_server_cpp_node" name="server" output="screen">
+	</node>
+
+</launch>
