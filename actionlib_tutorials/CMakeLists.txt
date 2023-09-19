@@ -44,7 +44,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 
 catkin_package(
-   INCLUDE_DIRS include
    LIBRARIES actionlib_tutorials
    CATKIN_DEPENDS actionlib actionlib_msgs message_generation roscpp rospy std_msgs
    DEPENDS system_lib
