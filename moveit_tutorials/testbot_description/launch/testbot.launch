@@ -1,0 +1,12 @@
+<launch>
+  <arg name="model" default="$(find testbot_description)/urdf/testbot.urdf" />
+  <arg name="gui" default="True" />
+  <param name="robot_description" textfile="$(arg model)" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" /> -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <arg name="rvizconfig" default="$(find testbot_description)/rviz/testbot.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+
+</launch>
