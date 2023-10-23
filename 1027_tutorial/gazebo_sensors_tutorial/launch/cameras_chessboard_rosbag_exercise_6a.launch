@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- rviz configured with minimim visualization -->
+	<node name="chess_rviz" pkg="rviz" type="rviz" respawn="false" args="-d $(find gazebo_sensors_tutorial)/config/chesslab_setup_onlycameras_exercise6.rviz" output="screen"/>
+
+	<!-- this is just to make the cameras float in gazebo
+		we add a virtual frame with a different name from world -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="chess_frame_broadcaster" args="0.0 0.0 0.0  0.0 0.0 0.0 world chess_frame" />
+
+    <group ns="camera_right">
+            <param name="publish_frequency" value="100"/>
+            <param name="robot_description" command="$(find xacro)/xacro $(find gazebo_sensors_tutorial)/robot/camera_right.urdf.xacro" />
+            <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+            <node ns="color" name="image_proc_camera_left" pkg="image_proc" type="image_proc" />
+
+          <node pkg="aruco_ros" type="marker_publisher" name="aruco_marker_publisher">
+                <remap from="/camera_info" to="/camera_right/color/camera_info" />
+                <remap from="/image" to="/camera_right/color/image_rect_color" />
+                <param name="image_is_rectified" value="True"/>
+                <param name="marker_size"        value="0.026"/>
+                <param name="reference_frame"    value="camera_right_color_optical_frame"/>
+                <param name="camera_frame"       value="camera_right_color_optical_frame"/>
+          </node>
+          <!-- Load parameters -->
+          <rosparam file="$(find gazebo_sensors_tutorial)/config/aruco_config_exercise6_right.yaml" command="load"/>
+          <!-- Start node -->
+          <node name="aruco_mapping" pkg="aruco_broadcaster" type="aruco_broadcaster" output="screen">
+            <remap from="/aruco_marker_publisher/markers" to="/camera_right/aruco_marker_publisher/markers" />
+          </node>
+	</group>
+
+    <group ns="camera_left">
+            <param name="publish_frequency" value="100"/>
+            <param name="robot_description" command="$(find xacro)/xacro $(find gazebo_sensors_tutorial)/robot/camera_left.urdf.xacro" />
+            <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+            <node ns="color" name="image_proc_camera_right" pkg="image_proc" type="image_proc" />
+
+            <node pkg="aruco_ros" type="marker_publisher" name="aruco_marker_publisher">
+                <remap from="/camera_info" to="/camera_left/color/camera_info" />
+                <remap from="/image" to="/camera_left/color/image_rect_color" />
+                <param name="image_is_rectified" value="True"/>
+                <param name="marker_size"        value="0.026"/>
+                <param name="reference_frame"    value="camera_left_color_optical_frame"/>
+                <param name="camera_frame"       value="camera_left_color_optical_frame"/>
+          </node>
+
+        <!-- Load parameters -->
+        <rosparam file="$(find gazebo_sensors_tutorial)/config/aruco_config_exercise6_left.yaml" command="load"/>
+        <!-- Start node -->
+        <node name="aruco_mapping" pkg="aruco_broadcaster" type="aruco_broadcaster" output="screen">
+            <remap from="/aruco_marker_publisher/markers" to="/camera_left/aruco_marker_publisher/markers" />
+        </node>
+    </group>
+
+    <!-- plays the recorded file myrosbag.bag stored in the .ros folder-->
+    <node
+            pkg="rosbag"
+            type="play"
+            name="play"
+            args="-l myrosbag.bag"
+    />
+</launch>

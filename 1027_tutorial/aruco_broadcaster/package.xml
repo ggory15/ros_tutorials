@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>aruco_broadcaster</name>
+  <version>0.0.1</version>
+  <description>aruco_broadcaster contains a node with the same name that, using some parameters, publishs or all tf detected by aruco_marker_publisher node or the ones selected from a list.</description>
+
+  <maintainer email="leopold.palomo@upc.edu">Leopold Palomo-Avellaneda</maintainer>
+  <author>Albert Cunillera</author>
+  <author>Leopold Palomo-Avellaneda</author>
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>MIT</license>
+
+
+  <!-- Url tags are optional, but multiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/aruco_mapping</url> -->
+  <url type="website">https://gitioc.upc.edu/ris/aruco_broadcaster</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>aruco</depend>
+  <depend>aruco_msgs</depend>
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>eigen_conversions</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

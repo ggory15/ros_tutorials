@@ -1,0 +1,20 @@
+# Yaml file with configutration of sensored setup
+#
+# markerFixList: contains the list of the arucos.
+#                if it is empty, publish all.
+# camera_frame: contains the string that define
+#               the camera frame wrt the markers are referred.
+# aruco_frame: name of the prefix _##
+#              where the new tf will be use.
+
+# ex. of a list
+#markerList: [100, 101, 106]
+
+# publish all the markers found
+markerList: []
+
+# the frame w.r.t. the arucos are referred
+camera_frame: camera_left_color_optical_frame
+
+# the prefix of the tf that will be used
+aruco_frame: aruco

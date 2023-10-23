@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<!--
+License: Apache 2.0. See LICENSE file in root directory.
+Copyright(c) 2017 Intel Corporation. All Rights Reserved
+
+This is the URDF model for the Intel RealSense 415 camera, in it's
+aluminum peripherial evaluation case.
+-->
+
+<robot name="sensor_d415" xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:macro name="sensor_d415" params="name parent flag_color flag_ir flag_depth updaterate *origin">
+    <!-- ARGUMENTS:
+        name = 
+        parent = 
+        flag_color = 0/1 to deactivate/activate the color camera
+        flag_ir = 0/1 to deactivate/activate the ir camera
+        flag_depth = 0/1 to deactivate/activate the depth camera
+        updaterate = sensor update_rate (Number of times per second a new camera image is taken within Gazebo).
+                     (the updateRate of the plugin is kept to zero, since then update_rate in the parent <sensor> tag will control the frame rate)
+    -->
+    
+	<!-- The following values are approximate, and the camera node
+	publishing TF values with actual calibrated camera extrinsic values -->
+	<xacro:property name="d415_cam_depth_to_left_ir_offset" value="0.0"/>
+	<xacro:property name="d415_cam_depth_to_right_ir_offset" value="-0.055"/>
+	<xacro:property name="d415_cam_depth_to_color_offset" value="0.015"/>
+
+	<!-- The following values model the aluminum peripherial case for the
+	d415 camera, with the camera joint represented by the actual
+	peripherial camera tripod mount -->
+	<xacro:property name="d415_cam_width" value="0.099"/>
+	<xacro:property name="d415_cam_height" value="0.023"/>
+	<xacro:property name="d415_cam_depth" value="0.02005"/>
+	<xacro:property name="d415_cam_mount_from_center_offset" value="0.00987"/>
+
+	<!-- The following offset is relative the the physical d415 camera peripherial
+	camera tripod mount -->
+	<xacro:property name="d415_cam_depth_px" value="${d415_cam_mount_from_center_offset}"/>
+	<xacro:property name="d415_cam_depth_py" value="0.020"/>
+	<xacro:property name="d415_cam_depth_pz" value="${d415_cam_height/2}"/>
+
+	<material name="aluminum">
+		<color rgba="0.5 0.5 0.5 1"/>
+	</material>
+
+
+	<!-- camera body, with origin at bottom screw mount -->
+	<joint name="${name}_joint" type="fixed">
+		<xacro:insert_block name="origin" />
+		<parent link="${parent}"/>
+		<child link="${name}_bottom_screw_frame" />
+	</joint>
+
+	<link name="${name}_bottom_screw_frame"/>
+
+	<joint name="${name}_link_joint" type="fixed">
+		<origin xyz="0 ${d415_cam_depth_py} ${d415_cam_depth_pz}" rpy="0 0 0"/>
+		<parent link="${name}_bottom_screw_frame"/>
+		<child link="${name}_link" />
+	</joint>
+
+	<link name="${name}_link">
+	<visual>
+		<origin xyz="${d415_cam_mount_from_center_offset} ${-d415_cam_depth_py} 0" rpy="${pi/2} 0 ${pi/2}"/>
+		<geometry>
+			<!-- <box size="${d415_cam_width} ${d415_cam_height} ${d415_cam_depth}"/> -->
+			<mesh filename="package://gazebo_sensors_tutorial/robot/sensors/visual/d415.stl" />
+		</geometry>
+		<material name="aluminum"/>
+	</visual>
+	<collision>
+		<origin xyz="0 ${-d415_cam_depth_py} 0" rpy="0 0 0"/>
+		<geometry>
+			<box size="${d415_cam_depth} ${d415_cam_width} ${d415_cam_height}"/>
+		</geometry>
+	</collision>
+	<inertial>
+		<!-- The following are not reliable values, and should not be used for modeling -->
+		<mass value="0.564" />
+		<origin xyz="0 0 0" />
+		<inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
+	</inertial>
+	</link>
+
+	<!-- camera depth joints and links -->
+	<joint name="${name}_depth_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="${name}_link"/>
+		<child link="${name}_depth_frame" />
+	</joint>
+	<link name="${name}_depth_frame"/>
+
+	<joint name="${name}_depth_optical_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+		<parent link="${name}_depth_frame" />
+		<child link="${name}_depth_optical_frame" />
+	</joint>
+	<link name="${name}_depth_optical_frame"/>
+
+	<!-- camera left IR joints and links -->
+	<joint name="${name}_left_ir_joint" type="fixed">
+		<origin xyz="0 ${d415_cam_depth_to_left_ir_offset} 0" rpy="0 0 0" />
+		<parent link="${name}_depth_frame" />
+		<child link="${name}_left_ir_frame" />
+	</joint>
+	<link name="${name}_left_ir_frame"/>
+
+	<joint name="${name}_left_ir_optical_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+		<parent link="${name}_left_ir_frame" />
+		<child link="${name}_left_ir_optical_frame" />
+	</joint>
+	<link name="${name}_left_ir_optical_frame"/>
+
+	<!-- camera right IR joints and links -->
+	<joint name="${name}_right_ir_joint" type="fixed">
+		<origin xyz="0 ${d415_cam_depth_to_right_ir_offset} 0" rpy="0 0 0" />
+		<parent link="${name}_depth_frame" />
+		<child link="${name}_right_ir_frame" />
+	</joint>
+	<link name="${name}_right_ir_frame"/>
+
+	<joint name="${name}_right_ir_optical_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+		<parent link="${name}_right_ir_frame" />
+		<child link="${name}_right_ir_optical_frame" />
+	</joint>
+	<link name="${name}_right_ir_optical_frame"/>
+
+	<!-- camera color joints and links -->
+	<joint name="${name}_color_joint" type="fixed">
+		<origin xyz="0 ${d415_cam_depth_to_color_offset} 0" rpy="0 0 0" />
+		<parent link="${name}_depth_frame" />
+		<child link="${name}_color_frame" />
+	</joint>
+	<link name="${name}_color_frame"/>
+
+	<joint name="${name}_color_optical_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+		<parent link="${name}_color_frame" />
+		<child link="${name}_color_optical_frame" />
+	</joint>
+	<link name="${name}_color_optical_frame"/>
+
+
+	<gazebo reference="${name}_link">
+
+	<xacro:if value="${flag_color}" >
+		<sensor name="${name}_rgb_sensor" type="camera">
+			<pose frame="${name}_color_optical_frame">0 0 0 0 0 0</pose>
+			<camera name="${name}_color">
+				<horizontal_fov>1.211258501</horizontal_fov><!--69.4 deg = 1.211258501 rad -->
+				<aspect_ratio>1.777777778</aspect_ratio><!-- 16:9-->
+				<image>
+					<width>1920</width>
+					<height>1080</height>
+					<format>RGB_INT8</format>
+				</image>
+				<clip>
+					<near>0.1</near>
+					<far>100</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			<always_on>1</always_on>
+			<update_rate>${updaterate}</update_rate>
+			<visualize>1</visualize>
+			<plugin name="${name}_color_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>${name}/color/</cameraName>
+				<imageTopicName>image_raw</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>${name}_color_optical_frame</frameName>
+                                <!--<hackBaseline>0.07</hackBaseline>-->
+                                <hackBaseline>0.0</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</xacro:if>
+
+	<xacro:if value="${flag_ir}" >
+		<sensor name="${name}_left_ired_sensor" type="camera">
+			<pose frame="${name}_left_ir_optical_frame">0 0 0 0 0 0</pose>
+			<camera name="${name}">
+				<horizontal_fov>1.211258501</horizontal_fov><!--69.4 deg = 1.211258501 rad -->
+				<aspect_ratio>1.777777778</aspect_ratio><!-- 16:9-->
+				<image>
+					<width>1920</width>
+					<height>1080</height>
+					<format>L_INT8</format>
+				</image>
+				<clip>
+					<near>0.1</near>
+					<far>100</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.05</stddev>
+				</noise>
+			</camera>
+			<always_on>1</always_on>
+			<update_rate>${updaterate}</update_rate>
+			<visualize>0</visualize>
+			<plugin name="{name}_left_ir_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>${name}/left_ir/</cameraName>
+				<imageTopicName>image_raw</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>${name}_left_ir_optical_frame</frameName>
+                                <!--<hackBaseline>0.07</hackBaseline>-->
+                                <hackBaseline>0.0</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+
+		<sensor name="${name}_right_ired_sensor" type="camera">
+			<pose frame="${name}_right_ir_optical_frame">0 0 0 0 0 0</pose>
+			<camera name="${name}">
+				<horizontal_fov>1.211258501</horizontal_fov><!--69.4 deg = 1.211258501 rad -->
+				<aspect_ratio>1.777777778</aspect_ratio><!-- 16:9-->
+				<image>
+					<width>1920</width>
+					<height>1080</height>
+					<format>L_INT8</format>
+				</image>
+				<clip>
+					<near>0.1</near>
+					<far>100</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.05</stddev>
+				</noise>
+			</camera>
+			<always_on>1</always_on>
+			<update_rate>${updaterate}</update_rate>
+			<visualize>0</visualize>
+			<plugin name="{name}_right_ir_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>${name}/right_ir/</cameraName>
+				<imageTopicName>image_raw</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>${name}_right_ir_optical_frame</frameName>
+                                <!--<hackBaseline>0.07</hackBaseline>-->
+                                <hackBaseline>0.0</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</xacro:if>
+
+	<xacro:if value="${flag_depth}" >
+		<sensor name="${name}_depth_sensor" type="depth">
+			<pose frame="${name}_depth_optical_frame">0 -0.03 0.004 0 0 0</pose>
+			<camera name="${name}">
+				<horizontal_fov>1.211258501</horizontal_fov><!--69.4 deg = 1.211258501 rad -->
+				<aspect_ratio>1.777777778</aspect_ratio><!-- 16:9-->
+				<image>
+					<width>1920</width>
+					<height>1080</height>
+				</image>
+				<clip>
+					<near>0.1</near>
+					<far>100</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.100</stddev>
+				</noise>
+			</camera>
+			<always_on>1</always_on>
+			<update_rate>${updaterate}</update_rate>
+			<visualize>0</visualize>
+			<plugin name="{name}_depth_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>${name}/depth/</cameraName>
+				<imageTopicName>image_raw</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>${name}_depth_optical_frame</frameName>
+                                <!--<hackBaseline>0.07</hackBaseline>-->
+				<hackBaseline>0.0</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</xacro:if>
+
+	</gazebo>
+
+</xacro:macro>
+</robot>

@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<launch>    
+    <!--node pkg="tf2_ros" type="static_transform_publisher" name="world_broadcaster" args="0.15 0.0 0.8 -0.701055602194 0.701051326543 -0.0923094879174 0.0923419656755 map rgbd_camera_optical_frame" /-->   
+    <node pkg="tf2_ros" type="static_transform_publisher" name="world_broadcaster" args="0 0 0 0 0 0 map base_link" />    
+         
+    <!-- Show in Rviz   -->   
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gazebo_sensors_tutorial)/config/kinect_arm.rviz"/> 
+</launch>
+
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<launch>    
+    <node pkg="tf2_ros" type="static_transform_publisher" name="world_broadcaster" args="-0.030588 -0.072660 0.15 -0.499976836603 0.499999999463 -0.499999999463 0.500023163397 map camera_link_optical" />     
+     
+    <!-- Show in Rviz   -->   
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gazebo_sensors_tutorial)/config/camera_coke2.rviz"/> 
+</launch>
+

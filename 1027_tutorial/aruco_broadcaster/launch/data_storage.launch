@@ -1,0 +1,9 @@
+<launch>
+
+    <!-- Data storage node -->
+    <node name="data_storage" pkg="aruco_broadcaster" type="data_node" output="screen"/>
+
+    <!-- Load parameters -->
+    <rosparam file="$(find aruco_broadcaster)/config/tablesetup-ioc-aruco.yaml" command="load"/>
+
+</launch>

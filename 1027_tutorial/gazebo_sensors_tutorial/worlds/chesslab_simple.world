@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="chesslabsetup_simple">
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+      <pose>0 0 -0.0405 0 0 0</pose>
+    </include>
+
+    <!-- camera view -->
+    <gui>
+      <camera name="user_default">
+            <pose>0.556 -0.9132 0.8266 0 0.59 2.15</pose>
+      </camera>
+    </gui>
+
+    <!-- chessboard -->
+    <include>
+      <uri>model://chessboard</uri>
+      <pose>0 0 -0.02 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+
+    <!-- white pieces -->
+    <include>
+      <uri>model://pawnW1</uri>
+      <pose>-0.125 -0.175 0.002 0 0 0</pose>
+    </include>
+
+    <!-- black pieces -->
+    <include>
+      <uri>model://pawnB1</uri>
+      <pose>0.125 -0.175 0.002 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>

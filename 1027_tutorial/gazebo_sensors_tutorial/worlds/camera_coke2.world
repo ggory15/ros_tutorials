@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="camera_coke2">
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+      <pose>0 0 -0.0405 0 0 0</pose>
+    </include>
+
+    <!-- camera view -->
+    <gui>
+      <camera name="user_default">
+            <pose>2.75 -1.58 0.75 0 0.29 2.25</pose>
+      </camera>
+    </gui>
+
+    <!-- camera model -->
+    <include>
+      <uri>model://camera-plugin</uri>
+      <pose>0.0 0.0 0.15 0 0 0 0</pose>
+      <static>1</static>
+    </include>
+    
+    <!-- coke_can model -->
+    <include>
+      <uri>model://coke_can</uri>
+      <pose>2.0 0.0 0 0 0 0</pose>
+      <static>1</static>
+    </include>
+
+  </world>
+</sdf>

@@ -1,0 +1,16 @@
+seven_dof_arm:
+
+ #http://answers.gazebosim.org/question/5468/gazebo_ros_pkgs-no-p-gain-specified-for-pid-in-positionjointinterface/
+ gazebo_ros_control:
+   pid_gains:
+     shoulder_pan_joint: {p: 100.0, i: 0.01, d: 10.0}
+     shoulder_pitch_joint: {p: 100.0, i: 0.01, d: 10.0}
+     elbow_roll_joint: {p: 100.0, i: 0.01, d: 10.0}
+     elbow_pitch_joint: {p: 100.0, i: 0.01, d: 10.0}
+     wrist_roll_joint: {p: 100.0, i: 0.01, d: 10.0}
+     wrist_pitch_joint: {p: 100.0, i: 0.01, d: 10.0}
+     gripper_roll_joint: {p: 100.0, i: 0.01, d: 10.0}
+     finger_joint1: {p: 100.0, i: 0.01, d: 10.0}
+     finger_joint2: {p: 100.0, i: 0.01, d: 10.0}
+     
+     

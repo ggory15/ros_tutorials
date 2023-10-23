@@ -1,0 +1,47 @@
+# Yaml file with configutration of sensored setup
+#
+# markerFixList: cointains the label of the
+# markers that are fixed on the setup
+# markerFixPos_##: contains values that are
+# a geometry_msgs::Pose: - x, y, z, qx, qy, qz, qw
+
+# for example:
+# markerFixPos_23: [0.1, 0.1, 0.0, 0.0, 0.0, 0.0, 1.0]
+# where the fix marker 23 is located at position
+# x, y, z =>  0.1, 0.1 , 0.0 in meters
+# with the rotation
+# x, y, z, q => 0.0, 0.0, 0.0, 1.0
+
+# camera_frame: contains the string that define
+# the camera frame wrt the markers are referred
+
+
+markerList: [100,101,102,103,104,105,106,107,204,215,216,315,501,505,506]
+
+markerFixPos_100: [-0.430,  0.380, 0.0, 0.0, 0.0, 0.0, 1.0]
+markerFixPos_101: [ 0.430,  0.380, 0.0, 0.0, 0.0, 0.0, 1.0]
+markerFixPos_102: [-0.430, -0.380, 0.0, 0.0, 0.0, 0.0, 1.0]
+markerFixPos_103: [ 0.430, -0.380, 0.0, 0.0, 0.0, 0.0, 1.0]
+markerFixPos_104: [ 0.434,  0.091, 0.0, 0, 0, 0.258819, 0.9659258]
+markerFixPos_105: [ 0.435, -0.100, 0.0, 0, 0, 0.3826834, 0.9238795]
+markerFixPos_106: [-0.435,  0.100, 0.0, 0, 0, 0.3826834, 0.9238795]
+markerFixPos_107: [-0.430, -0.082, 0.0, 0, 0, 0.1305262, 0.9914449]
+markerFixPos_204: [0.05, 0.15, 0.21, 0.0, 0.0, 0.8660254, 0.5]
+markerFixPos_215: [0.25, 0.25, 0.14, 0.0, 0.0, -0.3826834, 0.9238795]
+markerFixPos_216: [-0.25, -0.25, 0.14, 0.0, 0.0, -0.5, 0.8660254]
+markerFixPos_315: [-0.25, 0.25, 0.14, 0.0, 0.0, 0.7071068, 0.7071068]
+markerFixPos_501: [-0.05, 0.05, 0.05, 0.0, 0.0, 0.9659258, -0.258819]
+markerFixPos_505: [-0.25, 0.05, 0.061, 0.027, 0.183, 0.964, 0.192]
+markerFixPos_506: [0.25, 0.05, 0.026, 0.332, -0.137, -0.308, 0.881]
+
+camera_frame: kinect2_rgb_optical_frame
+ref_frame: world
+aruco_frame: aruco_frame
+
+#For april markers
+#transform_topic: /apriltag_marker_publisher/markers
+#distance_marker_topic: /tf
+
+#For aruco markers
+transform_topic: /tf
+distance_marker_topic: /aruco_marker_publisher/markers

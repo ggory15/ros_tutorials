@@ -1,0 +1,15 @@
+<launch>
+
+    <!-- Start node -->
+    <node name="aruco_mapping" pkg="aruco_broadcaster" type="aruco_broadcaster" output="screen"/>
+
+    <!-- Load parameters -->
+    <rosparam file="$(find aruco_broadcaster)/config/pl2esaii.yaml" command="load"/>
+
+    <!-- RVIZ node-->
+    <arg name="rvizconfig" default="$(find aruco_broadcaster)/config/aruco_mapping.rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="camera_broadcaster" args="0.0132916 0.414563 0.521007 0.331684 0.315894 -0.608716 0.647812 world rs_camera_link"/>
+
+</launch>

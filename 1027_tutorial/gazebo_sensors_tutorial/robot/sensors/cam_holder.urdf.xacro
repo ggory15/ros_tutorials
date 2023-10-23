@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot name="cam_holder" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="cam_holder" params="name parent *origin">
+
+	<joint name="${name}_anchor" type="fixed">
+		<xacro:insert_block name="origin" />
+		<parent link="${parent}"/>
+		<child link="${name}_base" />
+	</joint>
+
+	<link name="${name}_base">
+		<inertial>
+			<origin xyz="0 0 0" />
+			<mass value="3" />
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+		</inertial>
+		<visual name="holder">
+			<origin xyz="0.0 0.0 -0.2" rpy="0 0 0" />
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+			<geometry>
+				<cylinder radius="0.004" length="0.4"/>
+			</geometry>
+		</visual>
+		<visual name="base_top">
+			<origin xyz="0 0 -0.40" rpy="0 0 0" />
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+			<geometry>
+				<box size="0.15 0.15 0.02" />
+			</geometry>
+		</visual>
+		<visual name="base_bottom">
+			<origin xyz="-0.025 0 -0.43" rpy="0 0 0" />
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+			<geometry>
+				<box size="0.10 0.15 0.04" />
+			</geometry>
+		</visual>
+		<collision name="holder">
+			<origin xyz="0.0 0.0 -0.2" rpy="0 0 0" />
+			<geometry>
+				<cylinder radius="0.005" length="0.4"/>
+			</geometry>
+		</collision>
+		<collision name="base_top">
+			<origin xyz="0 0 -0.40" rpy="0 0 0" />
+			<geometry>
+				<box size="0.15 0.15 0.02" />
+			</geometry>
+		</collision>
+		<collision name="base_bottom">
+			<origin xyz="-0.025 0 -0.43" rpy="0 0 0" />
+			<geometry>
+				<box size="0.10 0.15 0.04" />
+			</geometry>
+		</collision>
+	</link>
+
+</xacro:macro>
+</robot>

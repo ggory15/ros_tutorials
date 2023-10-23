@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<launch>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="camera1_broadcaster" args="-0.030588 -0.072660 0.3 -0.679470685101 0.67950216353 -0.195694723206 0.195703789325 /world /camera_link_optical" />
+
+  <arg name="camera_info"     default="/camera/camera_info"/>
+  <arg name="image"          default="/camera/image_rect_color"/>
+  <arg name="markerSize"   default="0.026"/>
+  <arg name="reference_frame"    default="camera_link_optical"/>
+  <arg name="camera_frame"       default="camera_link_optical"/>
+  <arg name="camera_name"       default="camera"/>
+  <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
+
+  <node pkg="aruco_ros" type="marker_publisher" name="aruco_marker_publisher">
+        <remap from="/camera_info" to="$(arg camera_info)" />
+        <remap from="/image" to="$(arg image)" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="$(arg markerSize)"/>
+        <param name="reference_frame"    value="$(arg reference_frame)"/>   <!-- frame in which the marker pose will be refered -->
+        <param name="camera_frame"       value="$(arg camera_frame)"/>
+  </node>
+
+  <!-- Load parameters -->
+  <rosparam file="$(find gazebo_sensors_tutorial)/config/aruco_config.yaml" command="load"/>
+
+  <!-- Start node -->
+  <node name="aruco_mapping" pkg="aruco_broadcaster" type="aruco_broadcaster" output="screen"/>
+
+  <!-- image_proc node sits between the camera driver and vision processing nodes. -->
+  <!-- image_proc removes camera distortion from the raw image stream -->
+  <!-- requires to set the ROS_NAMESPACE to the camera publishing the images, camera1 in our case -->
+  <!-- using:
+         <env name="ROS_NAMESPACE" value="camera1" />
+         <node name="image_proc" pkg="image_proc" type="image_proc" />
+       or the ns inside the call to the node image_proc
+  -->
+  <!-- See http://wiki.ros.org/image_proc for more info -->
+  <node ns="camera" name="image_proc" pkg="image_proc" type="image_proc" />
+
+  <!-- Show in Rviz   -->
+  <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find gazebo_sensors_tutorial)/config/camera_aruco_cube-aruco_broadcaster.rviz"/-->
+  <arg name="rvizconfig" default="$(find gazebo_sensors_tutorial)/config/camera_aruco_cube-aruco_broadcaster.rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+</launch>

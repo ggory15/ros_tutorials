@@ -1,0 +1,15 @@
+<launch>
+
+    <!-- Start node -->
+    <node name="aruco_mapping" pkg="aruco_broadcaster" type="aruco_broadcaster" output="screen"/>
+
+    <!-- Load parameters -->
+    <rosparam file="$(find aruco_broadcaster)/config/tablesetup-ioc-aruco.yaml" command="load"/>
+
+    <!-- RVIZ node-->
+    <arg name="rvizconfig" default="$(find aruco_broadcaster)/config/aruco_mapping.rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+<!--kinect_camera_link-->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="camera_broadcaster" args="0.0141826 -0.113434 0.846425 0.993545 0.065353 0.0254247 -0.0891666 /world /kinect2_rgb_optical_frame" />
+</launch>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="camera_left">
+
+	<xacro:include filename="$(find gazebo_sensors_tutorial)/robot/sensors/_d415.urdf.xacro"/>
+	<xacro:include filename="$(find gazebo_sensors_tutorial)/robot/sensors/cam_holder.urdf.xacro"/>
+
+	<link name="chess_frame" />
+
+        <!-- sets camera frame w.r.t. to chess frame-->
+        <!-- set only the color camera and a slow frame rate: an image each 5 seconds)-->
+	<xacro:sensor_d415 name="camera_left" parent="chess_frame" flag_color="1" flag_ir="0" flag_depth="0" updaterate="0.2">
+		<origin xyz="0.0 -0.29 0.410304" rpy="0 1.161379 1.570791" /> <!-- result from calib -->
+	</xacro:sensor_d415>
+
+        <!-- sets cam holder w.r.t to camera-->
+	<xacro:cam_holder name="camera_left_holder" parent="camera_left_link">
+		<origin xyz="0.0 -0.020 0.0115" rpy="0 -1.161379 0" /> 
+	</xacro:cam_holder>
+</robot>
